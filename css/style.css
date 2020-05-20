@@ -52,6 +52,10 @@ td {
     transition: 0.5s;
 }
 
+.safe-click {
+    background-color: rgba(100, 235, 100, 0.5);
+}
+
 img {
 height: 20px;
 }

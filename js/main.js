@@ -15,7 +15,8 @@ var gGame = {
     markedCount: 0,
     secsPassed: 0,
     lives: 3,
-    hints: 3
+    hints: 3,
+    safeClicks: 3
 }
 
 function init() {
@@ -282,7 +283,48 @@ function restart() {
     init();
 }
 
+function safeClick() {
+    if (gGame.safeClicks === 0) return;
+    // get a random safe cell
+    var safeCells = getSafeCells();
+    var randIdx = getRandomInt(0, safeCells.length);
+    var randSafeCell = safeCells[randIdx];
+    // update safe clicks
+    gGame.safeClicks--;
+    var elSafeClicksLeft = document.querySelector('.num-of-clicks-left');
+    elSafeClicksLeft.innerText = gGame.safeClicks;
+    // reveal safe cell
+    var elSafeCell = document.querySelector(`#cell-${randSafeCell.i}-${randSafeCell.j}`);
+    var elSafeSpan = document.querySelector(`#cell-${randSafeCell.i}-${randSafeCell.j} span`);
+    elSafeCell.classList.remove('covered');
+    elSafeCell.classList.add('safe-click');
+    elSafeSpan.classList.remove('hidden');
+    elSafeSpan.classList.add('shown');
+    // remove safe click after 2 secs
+    setTimeout(function () {
+        elSafeCell.classList.add('covered');
+        elSafeCell.classList.remove('safe-click');
+        elSafeSpan.classList.add('hidden');
+        elSafeSpan.classList.remove('shown');
+    }, 2000);
+}
+
+function getSafeCells() {
+    var safeCells = [];
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            var currCell = gBoard[i][j];
+            if (!currCell.isMine && !currCell.isShown) {
+                var safeCell = { i: i, j: j }
+                safeCells.push(safeCell);
+            }
+        }
+    }
+    return safeCells;
+}
+
 function getHint() {
+    if (gGame.hints === 0) return;
     gGame.isOn = false;
     var elHint = document.querySelector('[data-i="' + (gGame.hints - 1) + '"]');
     elHint.classList.add('lighted');
@@ -309,8 +351,9 @@ function showHint(posI, posJ) {
             elCell.classList.add('covered');
             elCell.classList.remove('hint-reveal');
         }
-    gGame.hints--;
-    renderHints(gGame.hints);
+        gGame.hints--;
+        renderHints(gGame.hints);
+        gGame.isOn = true;
     }, 1000);
 }
 
