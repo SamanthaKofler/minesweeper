@@ -174,13 +174,9 @@ function cellClicked(i, j) {
             }
         }
     } else {
-        // hint shows up
-        showHint(i,j);
-
+        showHint(i, j);
     }
 }
-
-
 
 function expandShown(posI, posJ) {
     // neighbors loop
@@ -287,41 +283,48 @@ function restart() {
 }
 
 function getHint() {
-    console.log('hint');
     gGame.isOn = false;
     var elHint = document.querySelector('[data-i="' + (gGame.hints - 1) + '"]');
     elHint.classList.add('lighted');
 }
 
 function showHint(posI, posJ) {
+    var negs = getNegsIncl(posI, posJ);
+    for (var i = 0; i < negs.length; i++) {
+        var elCell = document.querySelector(`#cell-${negs[i].i}-${negs[i].j}`);
+        var elSpan = document.querySelector(`#cell-${negs[i].i}-${negs[i].j} span`);
+        elSpan.classList.remove('hidden');
+        elSpan.classList.add('shown');
+        elCell.classList.remove('covered');
+        elCell.classList.add('hint-reveal');
+
+    }
+    // remove hint after 1 sec
+    setTimeout(function () {
+        for (var i = 0; i < negs.length; i++) {
+            var elCell = document.querySelector(`#cell-${negs[i].i}-${negs[i].j}`);
+            var elSpan = document.querySelector(`#cell-${negs[i].i}-${negs[i].j} span`);
+            elSpan.classList.add('hidden');
+            elSpan.classList.remove('shown');
+            elCell.classList.add('covered');
+            elCell.classList.remove('hint-reveal');
+        }
+    gGame.hints--;
+    renderHints(gGame.hints);
+    }, 1000);
+}
+
+function getNegsIncl(posI, posJ) {
+    var negs = [];
     for (var i = posI - 1; i <= posI + 1; i++) {
         if (i < 0 || i >= gBoard.length) continue;
         for (var j = posJ - 1; j <= posJ + 1; j++) {
             if (j < 0 || j >= gBoard.length) continue;
-            var elCell = document.querySelector('#cell-' + i + '-' + j);
-            var elSpan = document.querySelector('#cell-' + i + '-' + j + ' span');
-            elSpan.classList.remove('hidden');
-            elSpan.classList.add('shown');
-            elCell.classList.remove('covered');
-            elCell.classList.add('hint-reveal');
-
+            var neg = { i: i, j: j };
+            negs.push(neg);
         }
     }
-    setTimeout(function () {
-        for (var i = posI - 1; i <= posI + 1; i++) {
-            if (i < 0 || i >= gBoard.length) continue;
-            for (var j = posJ - 1; j <= posJ + 1; j++) {
-                if (j < 0 || j >= gBoard.length) continue;
-                var elCell = document.querySelector('#cell-' + i + '-' + j);
-                var elSpan = document.querySelector('#cell-' + i + '-' + j + ' span');
-                elSpan.classList.add('hidden');
-                elSpan.classList.remove('shown');
-                elCell.classList.add('covered');
-                elCell.classList.remove('hint-reveal');
-            }
-        }
-    }, 1000);
-
+    return negs;
 }
 
 // Timer:

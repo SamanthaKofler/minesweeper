@@ -67,3 +67,7 @@ cursor: pointer;
 .hint-reveal {
     background-color: rgba(255, 255, 0, 0.5);
 }
+
+.available-clicks {
+    font-size: 8px;
+}
