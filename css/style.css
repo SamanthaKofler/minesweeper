@@ -1,5 +1,11 @@
 body {
+    margin: 0px;
     text-align: center;
+    font-family: fantasy;
+    background-color: rgb(125, 187, 245);
+}
+
+* {
     font-family: fantasy;
 }
 
@@ -8,15 +14,101 @@ table {
     margin: 0 auto;
 }
 
-table:hover{
-    
+table:hover {
     cursor: default;
 }
 
 td {
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     border: 1px solid rebeccapurple;
+}
+
+h1 {
+    font-size: 40px;
+    margin-top: 0px;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    background-color: rgb(124, 38, 173);
+    padding: 40px;
+    border-bottom: 5px solid rgb(30, 30, 163);
+    letter-spacing: 1.5px;
+}
+
+img {
+    height: 25px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.level {
+    margin: 20px;
+    color: white;
+    font-size: 14px;
+    font-weight: lighter;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 2px solid darkblue;
+    background-color: rgb(0, 68, 255);
+}
+
+.smiley {
+    font-size: 25px;
+    padding: 2px;
+    background-color: white;
+}
+
+.timer, .best-time, .lives, .hints, .safe {
+    display: inline-block;
+    margin: 20px;
+}
+
+.timer {
+    position: fixed;
+}
+
+.best-time {
+    margin-left: 220px;
+}
+
+.lives {
+    font-size: 20px;
+    min-width: 80px;
+}
+
+.lose-life {
+    background-color: rgba(156, 13, 13, 0.5);
+    transition: 0.5s;
+}
+
+.safe {
+    font-size: 12px;
+    border: 1px solid black;
+    background-color: rgb(89, 238, 59);
+    height: 40px;
+    border-radius: 50%;
+}
+
+.safe-click {
+    background-color: rgba(100, 235, 100, 0.5);
+}
+
+.hints {
+    min-width: 80px;
+}
+
+.hints:hover {
+    cursor: pointer;
+}
+
+.lighted {
+    background: radial-gradient(yellow, rgb(58, 156, 248));
+}
+
+.hint-reveal {
+    background-color: rgba(255, 255, 0, 0.5);
 }
 
 .hidden {
@@ -35,43 +127,27 @@ td {
     background: radial-gradient(rgba(227, 197, 245, 0.836), rgba(149, 11, 241, 0.966));
 }
 
-/* .revealed {
+.revealed {
     background-color: white;
-} */
-
-.smiley {
-    font-size: 20px;
-    padding: 2px;
-    background-color: white;
-    height: 35px;
-    width: 35px;
 }
 
-.lose-life {
-    background-color: rgba(156, 13, 13, 0.5);
-    transition: 0.5s;
+button:hover .tooltiptext {
+    display: block;
 }
 
-.safe-click {
-    background-color: rgba(100, 235, 100, 0.5);
+.tooltiptext {
+    display: none;
+    font-size: 13px;
 }
 
-img {
-height: 20px;
+.manual {
+    font-size: 18px;
+    margin: 15px;
+    background: none;
+    border-style: none;
 }
 
-.hints:hover {
-cursor: pointer;
-}
-
-.lighted {
-    background: radial-gradient(yellow, white);
-}
-
-.hint-reveal {
-    background-color: rgba(255, 255, 0, 0.5);
-}
-
-.available-clicks {
-    font-size: 8px;
+.manual-mines {
+    display: none;
+    font-size: 13px;
 }

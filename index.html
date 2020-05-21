@@ -10,19 +10,24 @@
 
 <body onload="init()">
     <h1>Minesweeper</h1>
-    <div class="timer">00:00</div>
-    <button class="smiley" onclick="restart()">🙂</button>
-    <div class="lives"></div>
-    <div class="hints"></div>
-    <button class="safe" onclick="safeClick()">Safe Click <br> <span class="available-clicks"><span class="num-of-clicks-left">3</span> clicks available</span></button>
+    <div class="timer">Time: <span>00:00</span></div>
+    <div class="best-time">Best Time: <span></span></div>
     <br>
-    <button class="level beginner" onclick="setLevel(4,2)">Beginner</button>
-    <button class="level medium" onclick="setLevel(8,12)">Medium</button>
-    <button class="level expert" onclick="setLevel(12,30)">Expert</button>
+    <button class="smiley" onclick="restart()">🙂</button>
+    <br>
+    <div class="lives"></div>
+    <button class="safe" onclick="safeClick()">Safe<br><span class="num-of-safe-clicks">3</span></button>
+    <div class="hints"></div>
+    <br>
+    <button class="level" onclick="setLevel(4,2)">Beginner</button>
+    <button class="level" onclick="setLevel(8,12)">Medium</button>
+    <button class="level" onclick="setLevel(12,30)">Expert</button>
     <table border="1">
         <tbody class="board"></tbody>
     </table>
 
+    <button class="manual" onclick="manualMode()">🔩🔨<span class="tooltiptext manually">Place the mines
+            manually</span><span class="manual-mines"><span></span> mines to place</span></button>
 
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
