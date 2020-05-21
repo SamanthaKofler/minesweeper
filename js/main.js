@@ -258,7 +258,6 @@ function markCell(i, j) {
         elSpan.classList.add('hidden');
         elCell.classList.add('covered');
         elCell.classList.remove('revealed');
-
     }
     checkVictory();
 }
@@ -315,7 +314,7 @@ function restart() {
     clearInterval(gTimerInterval);
     var timer = document.querySelector('.timer span');
     timer.innerText = '00:00';
-    // update the smiley
+    // update the features
     var elSmiley = document.querySelector('.smiley');
     elSmiley.innerText = '🙂';
     var elSafeButton = document.querySelector('.safe');
