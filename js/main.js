@@ -2,7 +2,11 @@
 const MINE = '💣';
 const FLAG = '🚩';
 var gBoard;
+var gHistory = [];
 
+var gTimeBegan = null
+var gTimeStopped = null
+var gTimerInterval = null;
 
 var gLevel = {
     SIZE: 8,
@@ -196,7 +200,10 @@ function cellClicked(i, j) {
     } else {
         showHint(i, j);
     }
+    // keep the board history for the undo-function
+    preserveBoardStr();
 }
+
 
 function expandShown(posI, posJ) {
     // neighbors loop
@@ -227,12 +234,7 @@ function expandShown(posI, posJ) {
 }
 
 function rightclick(e, i, j) {
-    if (e.which === 3) {
-        if (gGame.shownCount === 0 && gGame.markedCount === 0) {
-            startTimer();
-        }
-        markCell(i, j);
-    }
+    if (e.which === 3) markCell(i, j);
 }
 
 function markCell(i, j) {
@@ -240,6 +242,7 @@ function markCell(i, j) {
     if (currCell.isShown) return;
     var elCell = document.querySelector('#cell-' + i + '-' + j);
     var elSpan = document.querySelector('#cell-' + i + '-' + j + ' span');
+    if (gGame.shownCount === 0 && gGame.markedCount === 0) startTimer();
     // mark the cell with a flag
     if (!currCell.isMarked) {
         currCell.isMarked = true;
@@ -260,6 +263,7 @@ function markCell(i, j) {
         elCell.classList.remove('revealed');
     }
     checkVictory();
+    preserveBoardStr();
 }
 
 function gameOver() {
@@ -310,10 +314,9 @@ function restart() {
     // reset timer
     gTimeBegan = null
     gTimeStopped = null
-    gStoppedDuration = 0
     clearInterval(gTimerInterval);
-    var timer = document.querySelector('.timer span');
-    timer.innerText = '00:00';
+    var elTimer = document.querySelector('.timer span');
+    elTimer.innerText = '00:00';
     // update the features
     var elSmiley = document.querySelector('.smiley');
     elSmiley.innerText = '🙂';
@@ -431,6 +434,7 @@ function showHint(posI, posJ) {
 }
 
 function getNegsIncl(posI, posJ) {
+    // get the neighbors plus the "middle" cell itself
     var negs = [];
     for (var i = posI - 1; i <= posI + 1; i++) {
         if (i < 0 || i >= gBoard.length) continue;
@@ -479,11 +483,37 @@ function putMineManually(i, j) {
     }
 }
 
+function preserveBoardStr() {
+    var elBoard = document.querySelector('.board');
+    var strBoard = elBoard.innerHTML;
+    gHistory.push(strBoard);
+}
+
+function undo() {
+    if (gHistory.length === 1) return;
+    gHistory.pop();
+    var elBoard = document.querySelector('.board');
+    elBoard.innerHTML = gHistory[gHistory.length - 1];
+    updateGameStatus();
+}
+
+function updateGameStatus() {
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard.length; j++) {
+            var elCell = document.querySelector('#cell-'+i+'-'+j);
+            if (elCell.classList.contains('covered') && gBoard[i][j].isShown) {
+                gBoard[i][j].isShown = false;
+                gGame.shownCount--;
+            }
+            if (elCell.classList.contains('covered') && gBoard[i][j].isMarked) {
+                gGame.markedCount--;
+                gBoard[i][j].isMarked = false;
+            }
+        }
+    }
+}
+
 // Timer:
-var gTimeBegan = null
-var gTimeStopped = null
-var gStoppedDuration = 0
-var gTimerInterval = null;
 
 function startTimer() {
     if (gTimeBegan === null) {
@@ -502,11 +532,11 @@ function stopTimer() {
 
 function runTimer() {
     var currentTime = new Date();
-    var timeElapsed = new Date(currentTime - gTimeBegan - gStoppedDuration);
+    var timeElapsed = new Date(currentTime - gTimeBegan);
     var min = timeElapsed.getUTCMinutes();
     var sec = timeElapsed.getUTCSeconds();
-    var timer = document.querySelector('.timer span');
-    timer.innerText =
+    var elTimer = document.querySelector('.timer span');
+    elTimer.innerText =
         (min > 9 ? min : '0' + min) + ':' +
         (sec > 9 ? sec : '0' + sec);
 }

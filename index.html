@@ -22,13 +22,14 @@
     <button class="level" onclick="setLevel(4,2)">Beginner</button>
     <button class="level" onclick="setLevel(8,12)">Medium</button>
     <button class="level" onclick="setLevel(12,30)">Expert</button>
+    
     <table border="1">
         <tbody class="board"></tbody>
     </table>
 
     <button class="manual" onclick="manualMode()">🔩🔨<span class="tooltiptext manually">Place the mines
             manually</span><span class="manual-mines"><span></span> mines to place</span></button>
-
+    <button onclick="undo()" class="undo">⏪ undo</button>
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
 </body>
